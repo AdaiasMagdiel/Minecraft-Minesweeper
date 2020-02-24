@@ -1,0 +1,125 @@
+@font-face {
+	font-family: 'Minecraft';
+	font-weight: 400;
+	font-style: normal;
+	src: url('../fonts/minecraft_font.ttf') format('truetype');
+}
+
+* {
+	box-sizing: border-box;
+	border: none;
+	padding: 0;
+	margin: 0;
+	outline: none;
+}
+
+html,
+body {
+	background-color: #121212;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+}
+
+div.msg {
+	background-color: #c6c6c6;
+	border-radius: 10px;
+	box-shadow: inset -2px -2px 0px #8b8b8b;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	padding: 20px;
+	width: 80%;
+	max-width: 500px;
+	transition: 0.3s;
+	opacity: 0;
+}
+div.msg p {
+	text-shadow: 1px 1px 0px #212121, 1px 1px 2px #212121;
+	color: #fff;
+	font-family: 'Minecraft', sans-serif;
+	font-size: 14pt;
+	text-align: center;
+}
+
+div.msg.show {
+	opacity: 1;
+}
+
+button#restart {
+	background-color: #c6c6c6;
+	border-radius: 4px;
+	box-shadow: inset -2px -2px 0px #8b8b8b;
+	color: #fff;
+	cursor: pointer;
+	font-family: 'Minecraft', sans-serif;
+	text-shadow: 1px 2px 0px #212121;
+
+	font-size: 14pt;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	padding: 20px;
+}
+button#restart:active {
+	box-shadow: inset 2px 3px 1px #8b8b8b;
+	text-shadow: 1px 1px 2px #212121;
+}
+
+div#board {
+	background-color: #c6c6c6;
+	border-radius: 10px;
+	box-shadow: inset -2px -2px 0px #8b8b8b;
+	display: grid;
+	grid-template-columns: repeat(10, 1fr);
+	grid-template-rows: repeat(10, 1fr);
+	grid-gap: 5px;
+	padding: 10px;
+	width: 80%;
+	height: 80vw;
+	max-width: 500px;
+	max-height: 500px;
+}
+div#board div {
+	background-color: #555555;
+	box-shadow: inset 2px 3px 1px #212121;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+div#board div p {
+	color: #fff;
+	font-family: 'Minecraft', sans-serif;
+	margin-top: 4px;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+div#board div p.bomb {
+	color: transparent;
+	background: url('../images/dinamite_minecraft.png') no-repeat center/70%;
+	width: 100%;
+	height: 100%;
+}
+div#board div.closed {
+	background-color: #555555;
+	box-shadow: 1px 2px 1px #212121;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+div#board div.closed p {
+	color: transparent;
+}
+div#board div.closed p.bomb {
+	display: none;
+}
+img.move {
+	position: absolute;
+}
