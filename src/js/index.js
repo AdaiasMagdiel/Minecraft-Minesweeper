@@ -4,9 +4,11 @@ class Minesweeper {
 		let chance = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
 		this.mines = this.generateMines(chance);
 		this.board = this.generateBoard();
+		this.fields = [];
 		this.gameStart = true;
 		this.audio = this.createAudio();
 	}
+
 	restartButton() {
 		document
 			.querySelector('button#restart')
@@ -14,6 +16,7 @@ class Minesweeper {
 				location.reload();
 			});
 	}
+
 	createImage(x, y) {
 		let explosion = new Image(40, 40);
 		explosion.src = 'src/images/explosion.gif';
@@ -26,6 +29,7 @@ class Minesweeper {
 			document.body.removeChild(explosion);
 		}, 2000);
 	}
+
 	createAudio() {
 		let click = document.querySelector('audio#click');
 		let explosion = document.querySelector('audio#explosion');
@@ -35,6 +39,7 @@ class Minesweeper {
 			explosion,
 		};
 	}
+
 	generateMines(quantity) {
 		let mines = [];
 
@@ -50,6 +55,7 @@ class Minesweeper {
 
 		return mines;
 	}
+
 	checkNextsFields() {
 		for (let row = 0, rows = this.board.length; row < rows; row++) {
 			for (
@@ -126,6 +132,7 @@ class Minesweeper {
 			}
 		}
 	}
+
 	generateBoard() {
 		let board = [];
 
@@ -146,11 +153,31 @@ class Minesweeper {
 
 		return board;
 	}
+
+	openNeighborFields = (field) => {
+		let {col, row} = field.dataset;
+		col = +col;
+		row = +row;
+
+		for (let i = -1; i <= 1; i++) {
+			for(let j = -1; j <= 1; j++) {
+				if (this.board[row+i] && this.board[row+i][col+j] != undefined) {
+					this.fields[row+i][col+j].classList.remove('closed');
+				}
+			}
+		}
+	}
+
 	checkField = e => {
 		this.audio.click.currentTime = 0;
 		this.audio.click.play();
 
 		let field = e.currentTarget;
+
+		if(field.className == '' && field.innerText == '0') {
+			this.openNeighborFields(field);
+		}
+
 		field.classList.remove('closed');
 
 		if (e.currentTarget.children[0].innerText === 'x') {
@@ -193,9 +220,14 @@ class Minesweeper {
 				}
 			}
 		}
-	};
+	}
+
 	drawBoard = () => {
+		let colIdx = 0;
+		let rowIdx = 0;
+
 		this.board.forEach(row => {
+			this.fields[rowIdx] = [];
 			row.forEach(col => {
 				let div = document.createElement('div');
 				let p = document.createElement('p');
@@ -209,12 +241,18 @@ class Minesweeper {
 
 				div.classList.add('closed');
 				div.addEventListener('click', this.checkField);
+				div.dataset.col = colIdx;
+				div.dataset.row = rowIdx;
 
 				div.appendChild(p);
 				this.canvas.appendChild(div);
+				this.fields[rowIdx][colIdx] = div;
+				colIdx = ++colIdx % 10;
 			});
+			rowIdx++;
 		});
-	};
+	}
+
 	run() {
 		this.restartButton();
 		this.checkNextsFields();
@@ -222,7 +260,5 @@ class Minesweeper {
 	}
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-	const minesweeper = new Minesweeper();
-	minesweeper.run();
-});
+const minesweeper = new Minesweeper();
+minesweeper.run();
